@@ -11,14 +11,22 @@ app.get(('/'), (req, res) => {
 })
 
 app.get(('/users'), (req, res) => {
-    res.send([{ user: users, message: 'user fetch successfully' }])
+    try {
+        res.status(200).send([{ status: 200, user: users, message: 'user fetch successfully' }])
+    } catch (error) {
+        res.status(400).send({ status: 400, message: 'something went wrong' })
+    }
 })
 
 app.post("/users", (req, res) => {
-    // console.log("POST Request===>", req.body);
-    users.push({ id: Date.now().toString(22), ...req.body })
-    // console.log("Request===>", users)
-    res.send({ message: "user added successfully" }) // browser post ki request handle nahi krta  
+    try {
+        // console.log("POST Request===>", req.body);
+        users.push({ id: Date.now().toString(22), ...req.body })
+        // console.log("Request===>", users)
+        res.status(201).send({ status: 201, message: "user added successfully" }) // browser post ki request handle nahi krta  
+    } catch (error) {
+        res.status(400).send({ status: 400, message: 'something went wrong' })
+    }
 })
 
 app.delete('/users/:id', (req, res) => {
@@ -32,7 +40,7 @@ app.delete('/users/:id', (req, res) => {
 app.put(('/users/:id'), (req, res) => {
     const { id } = req.params;
     const userUpdate = users.findIndex((user) => user.id === id);
-    console.log("userUpdate", userUpdate);
+    // console.log("userUpdate", userUpdate);/
     users.splice(userUpdate, 1, { id: id, ...req.body })
     res.send({ id: id, message: "user updated successfully" })
 })
