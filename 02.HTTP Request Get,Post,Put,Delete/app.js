@@ -4,9 +4,16 @@ import { userSchema } from "./schema/index.js";
 
 const app = express();
 
+// ye ek middleware hai humne apne server ko bataya hai ky data hamare server par json format me ayega
 app.use(express.json());
 
 let users = [];
+
+// ye mene middlware banaya hai jo bi server pr request aygi tw ye middleware chal jaega  
+app.use('/', (req, res, next) => {
+    console.log("Middleware Request");
+    next();
+})
 
 // GET Request 
 app.get(('/'), (req, res) => {
@@ -31,7 +38,7 @@ app.post("/users", async (req, res) => {
         // console.log("Request===>", users)
         res.status(201).send({ status: 201, message: "user added successfully" }) // browser post ki request handle nahi krta  
     } catch (error) {
-        res.status(400).send({ status: 400, message: 'something went wrong' })
+        res.status(400).send({ error: error.details, status: 400, message: 'something went wrong' })
     }
 })
 
