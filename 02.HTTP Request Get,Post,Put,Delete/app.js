@@ -1,4 +1,6 @@
 import express from "express"
+import Joi from 'joi';
+import { userSchema } from "./schema/index.js";
 
 const app = express();
 
@@ -6,6 +8,7 @@ app.use(express.json());
 
 let users = [];
 
+// GET Request 
 app.get(('/'), (req, res) => {
     res.send(`Hello World ${Date.now().toString(22)}`)  // bowser hamy sirf get ki request ko handle krke deta hai 
 })
@@ -18,9 +21,12 @@ app.get(('/users'), (req, res) => {
     }
 })
 
-app.post("/users", (req, res) => {
+
+// POST Request 
+app.post("/users", async (req, res) => {
     try {
         // console.log("POST Request===>", req.body);
+        await userSchema.validateAsync(req.body)
         users.push({ id: Date.now().toString(22), ...req.body })
         // console.log("Request===>", users)
         res.status(201).send({ status: 201, message: "user added successfully" }) // browser post ki request handle nahi krta  
@@ -29,6 +35,8 @@ app.post("/users", (req, res) => {
     }
 })
 
+
+// DELETE Request 
 app.delete('/users/:id', (req, res) => {
     const { id } = req.params;
     //  const userDelete = users.findIndex((user) => user.id === Number(id)) // first method
@@ -37,6 +45,8 @@ app.delete('/users/:id', (req, res) => {
     res.send({ id: id, message: 'user deleted successfully' })
 })
 
+
+// PUT Request
 app.put(('/users/:id'), (req, res) => {
     const { id } = req.params;
     const userUpdate = users.findIndex((user) => user.id === id);
@@ -45,6 +55,8 @@ app.put(('/users/:id'), (req, res) => {
     res.send({ id: id, message: "user updated successfully" })
 })
 
+
+// Create Server 
 app.listen(3000, () => {
     console.log("Server code running");
 })
