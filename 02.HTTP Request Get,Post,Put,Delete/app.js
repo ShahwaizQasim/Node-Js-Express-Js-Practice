@@ -1,5 +1,4 @@
 import express from "express"
-import Joi from 'joi';
 import { userSchema } from "./schema/index.js";
 
 const app = express();
@@ -22,7 +21,7 @@ app.get(('/'), (req, res) => {
 
 app.get(('/users'), (req, res) => {
     try {
-        res.status(200).send([{ status: 200, user: users, message: 'user fetch successfully' }])
+        res.status(200).send([{ status: 200, user: users, message: 'user fetch successfully' }]) //200 ok
     } catch (error) {
         res.status(400).send({ status: 400, message: 'something went wrong' })
     }
@@ -35,7 +34,7 @@ app.post("/users", async (req, res) => {
         // console.log("POST Request===>", req.body);
         await userSchema.validateAsync(req.body)
         users.push({ id: Date.now().toString(22), ...req.body })
-        // console.log("Request===>", users)
+        // console.log("Request===>", users) //201 created
         res.status(201).send({ status: 201, message: "user added successfully" }) // browser post ki request handle nahi krta  
     } catch (error) {
         res.status(400).send({ error: error.details, status: 400, message: 'something went wrong' })
