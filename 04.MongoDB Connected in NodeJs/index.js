@@ -15,6 +15,8 @@ app.get(('/'), (req, res) => {
     res.send(`Mongo DB Connected in Node JS`)
 })
 
+app.use('/api', )
+
 app.listen(3000, () => {
     console.log('server running');
 })
