@@ -3,7 +3,7 @@ import router from './routes/index.js'
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json()) // hamari app par jo bi request ayegi uss request me jo bi data ayega wo json format me hoga
 
 app.get(('/'), (req, res) => {
     res.send("Hello World")
