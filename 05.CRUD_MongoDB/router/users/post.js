@@ -1,8 +1,13 @@
 import UserModal from "../../model/index.js";
+import bcrypt from "bcrypt";
 
 const postUser = async (req, res) => {
     try {
-        let user = await UserModal(req.body);
+        const password = bcrypt.hashSync(req.body.password, 10);  // user_password ko hash_password me convert kiya hai
+        let user = await UserModal({
+            ...req.body,
+            password
+        });
         user = await user.save()
         let userData = user.toObject(); // yahan string ko object me conver kiya hai
         delete userData.password; // because password ko delete krna tha because password ko hum frontend pr nahi dikhate
