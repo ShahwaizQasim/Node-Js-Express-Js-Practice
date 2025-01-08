@@ -11,7 +11,6 @@ const tokenVerification = (req, res, next) => {
             } else {
                 res.status(403).send({ status: 403, message: "token unauthorized" })
             }
-
         } else {
             res.status(403).send({ status: 403, message: "token not provided" })
         }
