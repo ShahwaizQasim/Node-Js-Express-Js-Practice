@@ -1,7 +1,7 @@
 import { app } from "./app.js";
 import { ENV } from "./constants.js";
 import ConnectDB from "./db/index.js";
-
+import 'dotenv/config'
 
 ConnectDB()
     .then(() => {
