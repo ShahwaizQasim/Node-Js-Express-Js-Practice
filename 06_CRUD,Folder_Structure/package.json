@@ -1,7 +1,7 @@
 {
   "name": "06_middlewares",
   "version": "1.0.0",
-  "description": "I am doing CRUD operators,Middlwares, and Folder Structure practice.",
+  "description": "I am doing CRUD operators, and Folder Structure practice.",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
