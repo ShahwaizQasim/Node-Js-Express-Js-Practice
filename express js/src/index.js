@@ -54,7 +54,7 @@ app.delete("/posts/:id", (req, res) => {
     console.log(id);
     // const userDelete = users.findIndex((ind) => ind.id === id)  // first method
     // users.splice(userDelete, 1)
-    users = users.filter((userId)=> userId !== id); // second mehtod
+    users = users.filter((userId) => userId.id !== id); // second mehtod
     res.status(200).send({
       status: 200,
       msg: "user deleted successfully",
@@ -64,11 +64,22 @@ app.delete("/posts/:id", (req, res) => {
   }
 });
 
-app.put("/posts/:id", ()=>{
-    const {id} = req.params;
-    
+app.put("/posts/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("id", id);
 
-})
+    const userUpdate = users.findIndex((userId) => userId.id == id);
+    users.splice(userUpdate, 1, { id: id, ...req.body });
+    res.status(200).send({
+      status: 200,
+      msg: "user updated successfully",
+      user: users,
+    });
+  } catch (error) {
+    res.status(500).send({ status: 500, msg: error.message });
+  }
+});
 
 console.log(users);
 
