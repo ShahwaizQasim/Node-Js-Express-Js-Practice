@@ -1,88 +1,20 @@
 import express from "express";
+import router from "./routes/routes.js";
+import 'dotenv/config'
+import ConnectDB from "./config/connectDB.js";
 
 const app = express();
 
 app.use(express.json());
 
+ConnectDB();
+
 app.get("/", (req, res) => {
   res.send(`Hello World ${Date.now().toString(22)}`);
 });
 
-app.get("/users", (req, res) => {
-  res.send({ name: "Syed Shahwaiz", trainer: "SMIT" });
-});
+app.use("/api", router)
 
-let users = [];
-
-app.get("/posts", (req, res) => {
-  try {
-    res.status(200).send([
-      {
-        status: 200,
-        msg: "user fetch successfully",
-        user: users,
-      },
-    ]);
-  } catch (error) {
-    res.status(500).send({
-      status: 500,
-      msg: error.message,
-      data: users,
-    });
-  }
-});
-
-app.post("/posts", (req, res) => {
-  try {
-    const data = req.body;
-    console.log("data", data);
-    users.push(data);
-    res.status(200).send({
-      status: 200,
-      msg: "user added successfully",
-      recievedData: data,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ status: 500, msg: error.message });
-  }
-});
-
-app.delete("/posts/:id", (req, res) => {
-  try {
-    const { id } = req.params;
-    console.log(id);
-    // const userDelete = users.findIndex((ind) => ind.id === id)  // first method
-    // users.splice(userDelete, 1)
-    users = users.filter((userId) => userId.id !== id); // second mehtod
-    res.status(200).send({
-      status: 200,
-      msg: "user deleted successfully",
-    });
-  } catch (error) {
-    res.status(500).send({ status: 500, msg: error.message });
-  }
-});
-
-app.put("/posts/:id", (req, res) => {
-  try {
-    const { id } = req.params;
-    console.log("id", id);
-
-    const userUpdate = users.findIndex((userId) => userId.id == id);
-    users.splice(userUpdate, 1, { id: id, ...req.body });
-    res.status(200).send({
-      status: 200,
-      msg: "user updated successfully",
-      user: users,
-    });
-  } catch (error) {
-    res.status(500).send({ status: 500, msg: error.message });
-  }
-});
-
-console.log(users);
-
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Server Run at 3000");
 });
